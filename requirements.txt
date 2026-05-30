@@ -1,0 +1,16 @@
+# Tested with Python 3.12, CUDA 12, NVIDIA RTX 4060.
+# CPU-only operation works for everything except the few-shot/MoE training,
+# which is GPU-recommended.
+
+torch>=2.0,<3.0
+torchvision
+torch-geometric>=2.3
+rdkit>=2023.09
+numpy>=1.24
+scipy>=1.11
+scikit-learn>=1.3
+pandas>=2.0
+xgboost>=1.7
+statsmodels>=0.14
+matplotlib>=3.7
+tqdm
