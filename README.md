@@ -1,6 +1,6 @@
-# Target-Conditioned Multi-View MoE and Source–Target Compatibility in Few-Shot Bioactivity Prediction
+# Source–Target Compatibility and Multi-View Mixture-of-Experts for Few-Shot Bioactivity Prediction
 
-Code and data accompanying the IEEE J-BHI submission *"Target-Conditioned Multi-View Mixture-of-Experts and Source–Target Compatibility in Few-Shot Bioactivity Prediction"*. Author: **Liang Dong** (`liangdng@gmail.com`, `Liang_Dong@baylor.edu`).
+Code and data accompanying the IEEE J-BHI submission *"Source–Target Compatibility and Multi-View Mixture-of-Experts for Few-Shot Bioactivity Prediction"*. Author: **Liang Dong** (`liangdng@gmail.com`, `Liang_Dong@baylor.edu`).
 
 ## Two contributions
 
@@ -21,7 +21,7 @@ tcmoe-compatibility/
 ├── README.md                          # this file
 ├── LICENSE                            # MIT
 ├── requirements.txt
-├── verify_tables.py                   # programmatic regression test (93 assertions)
+├── verify_tables.py                   # programmatic regression test (100 assertions)
 ├── run_moe_predictor.py               # MoE training/eval entry
 ├── run_compat_v8.py                   # 240-pair pairwise compatibility experiment
 ├── run_compat_dual_spotcheck.py       # dual-encoder probe-architecture spot-check
@@ -31,6 +31,7 @@ tcmoe-compatibility/
 ├── analyze_compat_v8.py               # main compat analysis + scatter figure
 ├── analyze_compat_cv.py               # cross-family LOO + permutation test
 ├── analyze_compat_rigor.py            # support-only C_nn + two-way cluster-robust SEs
+├── run_interpretability.py            # Section V-D: IG attribution + decision-tree surrogate (real SCD-1 molecules)
 ├── models/
 │   ├── dual_encoder.py                # DualEncoder (pre-pooling cross-attention + gated fusion)
 │   ├── moe_predictor.py               # TargetConditionedRouter + MoEPredictor
@@ -51,14 +52,18 @@ tcmoe-compatibility/
     ├── compat_v8_16tgt.json           # 240-pair compatibility raw results
     ├── compat_v8_16tgt_supC.json      # support-only C_nn sensitivity
     ├── compat_dual_spotcheck.json     # probe-architecture spot-check
-    └── moe_3view_results.json         # 3-view ablation
+    ├── moe_3view_results.json         # 3-view ablation
+    ├── scd1/predictor_scd1.pt         # SCD-1 Morgan-FP predictor used by the Section V-D interpretability
+    └── interpretability/              # Section V-D artifacts (real SCD-1 molecules)
+        ├── extracted_rules.json       # decision-tree feature importances + surrogate fidelity
+        └── feature_attributions.json  # integrated-gradient Morgan-bit attributions
 ```
 
 ## Reproducing every cited number
 
 ```bash
 pip install -r requirements.txt
-python verify_tables.py        # 93 programmatic assertions; non-zero exit on mismatch
+python verify_tables.py        # 100 programmatic assertions; non-zero exit on mismatch
 ```
 
 `verify_tables.py` is the canonical regression test — it asserts every numeric claim in the paper against the frozen JSONs under `outputs/` and returns non-zero if any cell drifts.
@@ -74,6 +79,7 @@ python verify_tables.py        # 93 programmatic assertions; non-zero exit on mi
 | Cross-family LOO + permutation | `python analyze_compat_cv.py outputs/compat_v8_16tgt.json` | <1 min |
 | Support-only C_nn + cluster-robust SEs | `python analyze_compat_rigor.py` | ~5 min |
 | Dual-encoder probe spot-check | `python run_compat_dual_spotcheck.py` | ~30 min |
+| Section V-D interpretability (IG + decision tree) | `python run_interpretability.py` | <2 min |
 | Compatibility-gain scatter | `python analyze_compat_v8.py outputs/compat_v8_16tgt.json compat_gain.eps` | <10 s |
 | 12 new ChEMBL target CSVs | `python curate_chembl_v8.py` | ~5 min, requires internet |
 

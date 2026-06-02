@@ -1,0 +1,20 @@
+{
+  "accuracy": 0.895,
+  "feature_importances": {
+    "MolWt": 0.353520378300114,
+    "LogP": 0.06701698843345749,
+    "NumHDonors": 0.209357522733574,
+    "NumHAcceptors": 0.0,
+    "TPSA": 0.14500327381123326,
+    "NumRotatableBonds": 0.0,
+    "RingCount": 0.09770017727566789,
+    "NumAromaticRings": 0.0,
+    "FractionCSP3": 0.12740165944595333,
+    "NumHeavyAtoms": 0.0,
+    "QED": 0.0
+  },
+  "tree_depth": 4,
+  "n_hits": 100,
+  "n_nonhits": 100,
+  "tree_text": "|--- MolWt <= 420.66\n|   |--- NumHDonors <= 2.50\n|   |   |--- RingCount <= 4.50\n|   |   |   |--- class: 0\n|   |   |--- RingCount >  4.50\n|   |   |   |--- FractionCSP3 <= 0.32\n|   |   |   |   |--- class: 0\n|   |   |   |--- FractionCSP3 >  0.32\n|   |   |   |   |--- class: 1\n|   |--- NumHDonors >  2.50\n|   |   |--- class: 1\n|--- MolWt >  420.66\n|   |--- TPSA <= 73.74\n|   |   |--- class: 0\n|   |--- TPSA >  73.74\n|   |   |--- FractionCSP3 <= 0.19\n|   |   |   |--- NumHDonors <= 2.50\n|   |   |   |   |--- class: 0\n|   |   |   |--- NumHDonors >  2.50\n|   |   |   |   |--- class: 1\n|   |   |--- FractionCSP3 >  0.19\n|   |   |   |--- LogP <= 3.87\n|   |   |   |   |--- class: 1\n|   |   |   |--- LogP >  3.87\n|   |   |   |   |--- class: 1\n"
+}

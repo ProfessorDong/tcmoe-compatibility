@@ -252,6 +252,25 @@ cn_all_ord = np.concatenate([np.array([r['C_nn'] for r in d_spot if r['target'] 
 pr_p, _ = st.pearsonr(cn_all_ord, g_all)
 check("Pooled spot-check within-target gain Pearson", pr_p, -0.010, tol=0.05)
 
+
+# =====================================================================
+# Section V-D: interpretability (Level-2 IG bits + Level-3 decision tree)
+# Source: outputs/interpretability/{feature_attributions,extracted_rules}.json
+# Regenerate with: python run_interpretability.py
+# =====================================================================
+print("\n--- Section V-D: Interpretability ---")
+_er = json.load(open('outputs/interpretability/extracted_rules.json'))
+_fi = _er['feature_importances']
+check("V-D tree MolWt importance",        _fi['MolWt'],        0.354, tol=0.01)
+check("V-D tree NumHDonors importance",   _fi['NumHDonors'],   0.209, tol=0.01)
+check("V-D tree TPSA importance",         _fi['TPSA'],         0.145, tol=0.01)
+check("V-D tree FractionCSP3 importance", _fi['FractionCSP3'], 0.127, tol=0.01)
+check("V-D tree surrogate fidelity",      _er['accuracy'],     0.895, tol=0.005)
+_fa = json.load(open('outputs/interpretability/feature_attributions.json'))
+_imp = {int(b): v for b, v in zip(_fa['top_bits'], _fa['bit_importance'])}
+check("V-D IG bit 714 (aliphatic, positive)", _imp[714], +0.189, tol=0.02)
+check("V-D IG bit 726 (aromatic, negative)",  _imp[726], -0.206, tol=0.02)
+
 # =====================================================================
 # Summary
 # =====================================================================
